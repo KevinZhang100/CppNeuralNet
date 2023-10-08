@@ -28,7 +28,7 @@ public:
         bias.resize(hidden_size, std::vector<double> (output_size, 0.0));
     }
 
-    std::vector<std::vector<double>> forward(std::vector<std::vector<double>> &input) override{
+    std::vector<std::vector<double>> forward(std::vector<std::vector<double>> &input) {
         //std::cout << input.size() << " " << input_size << " " << input[0].size() << " " << hidden_size << std::endl;
 
         if(input.size() != input_size) {
@@ -80,7 +80,7 @@ public:
         }
     }
 
-    void backward() override{
+    void backward() {
         
     }
 };
