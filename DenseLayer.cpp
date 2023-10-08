@@ -1,9 +1,8 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include <cmath>
-#include <algorithm>
 #include "Layer.hpp"
+#include "ActivationFunctions.hpp"
 
 class Dense final: public Layer {
 private:
@@ -50,34 +49,9 @@ public:
         }
 
         if(activation == "softmax")
-            softmax(output);
+            ActivationFunctions::softmax(output);
 
         return output;
-    }
-
-    void softmax(std::vector<std::vector<double>> &output) {
-        double sum = 0.0, maxEle = -1e9;
-
-        for(std::vector<double> &vec: output) {
-            for(double val: vec) {
-                maxEle = std::max(maxEle, val);
-            }
-        }
-
-        maxEle = std::log(maxEle);
-
-        for(std::vector<double> &vec: output) {
-            for(double &val: vec) {
-                val = std::exp(std::log(val)-maxEle);
-                sum += val;
-            }
-        }
-
-        for(std::vector<double> vec: output) {
-            for(double &val: vec) {
-                val /= sum;
-            }
-        }
     }
 
     void backward() {
