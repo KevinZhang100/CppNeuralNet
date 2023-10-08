@@ -5,7 +5,7 @@
 #include <algorithm>
 #include "Layer.hpp"
 
-class Dense : public Layer {
+class Dense final: public Layer {
 private:
     std::vector<std::vector<double>> weights;
     std::vector<std::vector<double>> bias;
