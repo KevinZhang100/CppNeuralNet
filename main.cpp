@@ -1,75 +1,58 @@
 #include <iostream>
 #include <vector>
+#include <cmath>
+#include <chrono>
 #include "Model.cpp"
+#include "Matrix.hpp"
 
-void Testcase1(std::vector<std::vector<double>> &data, std::vector<double> &labels, size_t &m, size_t &n) {
-  data = {
-    {2, 4, 2, 1},
-    {2, 4, 3, 2},
-    {3, 3, 2, 3},
-    {4, 3, 2, 4}
-  };
+void testcase1(Matrix &data, Matrix &labels, size_t &m, size_t &n, size_t &classes) {
+  m = 200, n = 2, classes = 2;
 
-  labels = {1, 2, 3};
-  m = 4, n = 4;
-}
+  srand(42);
+  data.resize(m, n);
+  labels.resize(m, classes);
 
-void Testcase2(std::vector<std::vector<double>> &data, std::vector<double> &labels, size_t &m, size_t &n) {
-    data = {
-    {2, 4, 2, 1},
-    {2, 4, 3, 2},
-    {3, 3, 2},
-    {4, 3, 2, 4}
-  };
+  for(size_t i = 0; i < classes; i++) {
+    for(size_t j = i*100; j < (i+1)*100; j++) {
+      double radius = static_cast<double>((j - i*100)) / 100;
+      double theta = (radius+i)*4 + 0.2 * static_cast<double>((rand() % 100) + 1) / 100;;
 
-  labels = {1, 2, 3, 4};
-  m = 4, n = 4;
-}
+      data(j, 0) = radius * sin(theta);
+      data(j, 1) = radius * cos(theta);
 
-void Testcase3(std::vector<std::vector<double>> &data, std::vector<double> &labels, size_t &m, size_t &n) {
-    data = {
-    {2, 4, 2, 1},
-    {2, 4, 3, 2},
-    {3, 3, 2, 3},
-    {4, 3, 2, 4}
-  };
-
-  labels = {1, 2, 3, 4};
-  m = 4, n = 3;
-}
-
-void Testcase4(std::vector<std::vector<double>> &data, std::vector<double> &labels, size_t &m, size_t &n) {
-    data = {
-    {2, 4, 2, 1},
-    {2, 4, 3, 2},
-    {3, 3, 2, 3},
-    {4, 3, 2, 4}
-  };
-
-  labels = {1, 0, 1, 0};
-  m = 4, n = 4;
+      labels(j, 0) = (i == 0);
+      labels(j, 1) = (i == 1);
+    }
+  }
 }
 
 int main() {
-  std::vector<std::vector<double>> data;
-  std::vector<double> labels;
-  size_t m = 0, n = 0;
+  Matrix data;
+  Matrix labels;
+  size_t m = 0, n = 0, classes = 0;
 
-  Testcase4(data, labels, m, n);
-  // Testcase2(data, labels, n);
-  // Testcase3(data, labels, n);
-  // Testcase4(data, labels, n);
-  
+  testcase1(data, labels, m, n, classes);
+  auto start_time = std::chrono::high_resolution_clock::now();
+
   //data, labels, input count, input size, epochs
-  Model model(data, labels, m, n, 10);
-  model.dense(512, "");
-  model.dense(256, "");
-  model.output();
+  Model model(data, labels, m, n, 500, classes);
+  model.dense(50, "relu");
+  model.dense(25, "relu");
+  model.output(); 
 
-  std::vector<double> result = model.run();
+  Matrix result(model.run());
 
-  for(double num: result) {
-    std::cout << num << " ";
+  auto end_time = std::chrono::high_resolution_clock::now();
+  std::chrono::duration<double> time = end_time - start_time;
+
+  std::cout << "_______________________output________________________" << std::endl;
+  
+  for(size_t i = 0; i < m; i++) {
+    for(size_t j = 0; j < n; j++) {
+      std::cout << result(i, j) << " ";
+    }
+    std::cout << std::endl;
   }
-  std::cout << std::endl;
+
+  std::cout << "Time taken: " << time.count() << " s" << std::endl;
 }
