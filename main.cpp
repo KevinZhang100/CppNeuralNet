@@ -17,7 +17,6 @@ void testcase1(Matrix &data, Matrix &labels, size_t &m, size_t &n, size_t &class
         for (size_t j = i * 100; j < (i + 1) * 100; j++) {
             double radius = static_cast<double>((j - i * 100)) / 100;
             double theta = (radius + i) * 4 + 0.2 * static_cast<double>((rand() % 100) + 1) / 100;
-            ;
 
             data(j, 0) = radius * sin(theta);
             data(j, 1) = radius * cos(theta);
@@ -42,7 +41,7 @@ int main() {
     model.dense(25, "relu");
     model.output();
 
-    Matrix result(model.run());
+    Matrix result = model.run();
 
     auto end_time = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> time = end_time - start_time;
@@ -56,5 +55,5 @@ int main() {
         std::cout << std::endl;
     }
 
-    std::cout << "Time taken: " << time.count() << " s" << std::endl;
+    std::cout << "Time taken: " << time.count() << " sec" << std::endl;
 }

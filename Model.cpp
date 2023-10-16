@@ -98,7 +98,7 @@ public:
             Matrix input = data;
 
             for(Layer* layer: layers) {
-                input.deep_copy(layer->forward(input));
+                input = layer->forward(input);
             }
 
             if(i == epochs-1)
@@ -108,7 +108,7 @@ public:
             Matrix output_gradient = activation_functions::dC_softmax(input, labels);
         
             for(int i = layers.size()-1; i >= 0; i--) {
-                output_gradient.deep_copy(layers[i]->backward(output_gradient, learning_rate));
+                output_gradient = layers[i]->backward(output_gradient, learning_rate);
             }
 
             if(i % 50 == 0) {

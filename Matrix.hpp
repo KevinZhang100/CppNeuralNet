@@ -2,7 +2,7 @@
 #define MATRIX_H
 #include <cstddef>
 
-struct Matrix {
+class Matrix {
 private:
     size_t m = 0, n = 0;
     double** arr = nullptr;

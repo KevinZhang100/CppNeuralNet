@@ -42,7 +42,7 @@ public:
             }
         }
 
-        hidden_layer.deep_copy(input);
+        hidden_layer = input;
 
         if(activation == "softmax")
             activation_functions::softmax(output);
