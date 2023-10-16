@@ -1,14 +1,14 @@
 #ifndef MATRIX_H
 #define MATRIX_H
-#include <cstddef> 
+#include <cstddef>
 
 struct Matrix {
 private:
     size_t m = 0, n = 0;
-    double **arr = nullptr;
+    double** arr = nullptr;
 
 public:
-    Matrix () {}
+    Matrix() {}
 
     Matrix(size_t m, size_t n) {
         resize(m, n);
@@ -18,11 +18,16 @@ public:
         del();
     }
 
+    Matrix& operator=(const Matrix& other) {
+        deep_copy(other);
+        return *this;
+    }
+
     Matrix(const Matrix& other) {
         deep_copy(other);
     }
 
-    double operator()(size_t i,size_t j) const {
+    double operator()(size_t i, size_t j) const {
         return arr[i][j];
     }
 
@@ -35,9 +40,9 @@ public:
             delete[] arr[i];
         }
 
-        if(arr)
+        if (arr)
             delete[] arr;
-        
+
         arr = nullptr;
         m = 0, n = 0;
     }
@@ -49,7 +54,7 @@ public:
 
         for (size_t i = 0; i < m; i++) {
             arr[i] = new double[n];
-            
+
             for (size_t j = 0; j < n; j++) {
                 arr[i][j] = other.arr[i][j];
             }
@@ -63,11 +68,10 @@ public:
 
         arr = new double*[m];
 
-        for(size_t i = 0; i < m; i++) {
-
+        for (size_t i = 0; i < m; i++) {
             arr[i] = new double[n];
 
-            for(size_t j = 0; j < n; j++) {
+            for (size_t j = 0; j < n; j++) {
                 arr[i][j] = 0.0;
             }
         }
