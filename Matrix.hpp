@@ -18,8 +18,24 @@ public:
         del();
     }
 
-    Matrix& operator=(const Matrix& other) {
-        deep_copy(other);
+    Matrix(Matrix&& other) {
+        del();
+        m = other.m;
+        n = other.n;
+        arr = other.arr;
+        other.m = 0;
+        other.n = 0;
+        other.arr = nullptr;
+    }
+
+    Matrix& operator=(Matrix&& other) {
+        del();
+        m = other.m;
+        n = other.n;
+        arr = other.arr;
+        other.m = 0;
+        other.n = 0;
+        other.arr = nullptr;
         return *this;
     }
 
@@ -27,12 +43,17 @@ public:
         deep_copy(other);
     }
 
+    Matrix& operator=(const Matrix& other) {
+        deep_copy(other);
+        return *this;
+    }
+
     double operator()(size_t i, size_t j) const {
-        return arr[i][j];
+        return *(*(arr + i) + j);
     }
 
     double& operator()(size_t i, size_t j) {
-        return arr[i][j];
+        return *(*(arr + i) + j);
     }
 
     void del() {
@@ -49,14 +70,14 @@ public:
 
     void deep_copy(const Matrix& other) {
         del();
-        this->m = other.m, this->n = other.n;
+        m = other.m, n = other.n;
         arr = new double*[m];
 
         for (size_t i = 0; i < m; i++) {
-            arr[i] = new double[n];
+            *(arr + i) = new double[n];
 
             for (size_t j = 0; j < n; j++) {
-                arr[i][j] = other.arr[i][j];
+                *(*(arr + i) + j) = *(*(other.arr + i) + j);
             }
         }
     }
@@ -69,23 +90,23 @@ public:
         arr = new double*[m];
 
         for (size_t i = 0; i < m; i++) {
-            arr[i] = new double[n];
+            *(arr + i) = new double[n];
 
             for (size_t j = 0; j < n; j++) {
-                arr[i][j] = 0.0;
+                *(*(arr + i) + j) = 0.0;
             }
         }
     }
 
-    bool empty() {
+    bool empty() const {
         return m == 0 && n == 0;
     }
 
-    size_t row() {
+    size_t row() const {
         return m;
     }
 
-    size_t col() {
+    size_t col() const {
         return n;
     }
 };

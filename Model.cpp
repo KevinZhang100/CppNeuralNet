@@ -27,13 +27,12 @@ private:
     bool has_out = false;
 
 public:
-    Model(Matrix &data, Matrix &labels, size_t m, size_t n, size_t epochs, size_t classes) {
-        assert_errors(data, labels, m, n);
-        this->data = data, this->labels = labels, this->m = m, this->n = n, this->epochs = epochs, this->classes = classes;
+    Model(Matrix &dat, Matrix &l, size_t m, size_t n, size_t epochs, size_t classes) {
+        assert_errors(dat, l, m, n);
+        data = dat, labels = l, this->m = m, this->n = n, this->epochs = epochs, this->classes = classes;
     }
 
     void assert_errors(Matrix &data, Matrix &labels, size_t m, size_t n) {
-        
         if(data.empty()) {
             throw std::invalid_argument("data is empty");
         }
@@ -95,20 +94,21 @@ public:
 
         for(size_t i = 0; i < epochs; i++) {
 
-            Matrix input = data;
+            Matrix input(data);
 
             for(Layer* layer: layers) {
-                input = layer->forward(input);
+                input = std::move(layer->forward(input));
             }
 
             if(i == epochs-1)
                 res = input;
             
             double loss = loss_functions::crossentropy(input, labels);
-            Matrix output_gradient = activation_functions::dC_softmax(input, labels);
-        
+            activation_functions::dC_softmax(input, labels);
+            Matrix output_gradient = std::move(input);
+    
             for(int i = layers.size()-1; i >= 0; i--) {
-                output_gradient = layers[i]->backward(output_gradient, learning_rate);
+                output_gradient = std::move(layers[i]->backward(output_gradient, learning_rate));
             }
 
             if(i % 50 == 0) {

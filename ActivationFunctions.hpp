@@ -18,8 +18,6 @@ namespace activation_functions {
                 maxEle = std::max(maxEle, output(i, j));
             }
 
-            maxEle = maxEle;
-
             for(size_t j = 0; j < output.col(); j++) {
                 output(i, j) = std::exp(output(i, j)-maxEle);
                 sum += output(i, j);
@@ -31,7 +29,7 @@ namespace activation_functions {
         }
     }
     
-    Matrix dC_softmax(Matrix output, Matrix &labels) {
+    void dC_softmax(Matrix &output, Matrix &labels) {
 
         // dC/dZ = y^_i - y_i
         double num_examples = output.row();
@@ -43,8 +41,6 @@ namespace activation_functions {
                 output(i, j) /= num_examples; //normalization
             }
         }
-
-        return output;
     }
 
     void relu(Matrix &output) {

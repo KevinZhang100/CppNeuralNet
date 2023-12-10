@@ -7,8 +7,10 @@
 namespace operations {
 
     Matrix multipy(Matrix &A, Matrix &B) {
-        if(A.col() != B.row())
+        if(A.col() != B.row()) {
+            std::cout << A.col() << " " << B.row() << std::endl;
             throw std::invalid_argument("Matrix A and B sizes do not match");
+        }
         
         Matrix output(A.row(), B.col());
         
@@ -19,7 +21,7 @@ namespace operations {
                 }
             }
         }
-
+        
         return output;
     }
 

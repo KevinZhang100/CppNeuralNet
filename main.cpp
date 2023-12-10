@@ -36,7 +36,7 @@ int main() {
     auto start_time = std::chrono::high_resolution_clock::now();
 
     // data, labels, input count, input size, epochs
-    Model model(data, labels, m, n, 20, classes);
+    Model model(data, labels, m, n, 500, classes);
     model.dense(50, "relu");
     model.dense(25, "relu");
     model.output();
@@ -56,4 +56,5 @@ int main() {
     }
 
     std::cout << "Time taken: " << time.count() << " sec" << std::endl;
+    return 0;
 }
