@@ -28,7 +28,7 @@ private:
     std::vector<LayerID> layerIds;
 
     size_t n = 0, m = 0, epochs = 0, classes = 0;
-    float learning_rate = 1;
+    fp learning_rate = 1;
     bool has_out = false;
 
 public:

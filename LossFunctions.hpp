@@ -7,7 +7,7 @@
 
 namespace loss_functions {
 
-    float crossentropy(Matrix& predict, Matrix& labels);
+    fp crossentropy(Matrix& predict, Matrix& labels);
 
 }
 

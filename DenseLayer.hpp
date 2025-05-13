@@ -14,7 +14,7 @@ class Dense final : public Layer {
 private:
     Matrix weights;
     Matrix hidden_layer;
-    std::vector<float> bias;
+    std::vector<fp> bias;
 
     size_t data_size = 0;
     size_t output_size = 0;
@@ -25,7 +25,7 @@ public:
     Dense(size_t data_size, size_t output_size, size_t hidden_size, std::string activation);
 
     Matrix forward(Matrix& input) override;
-    Matrix backward(Matrix& output_grad, float learning_rate) override;
+    Matrix backward(Matrix& output_grad, fp learning_rate) override;
 };
 
 #endif

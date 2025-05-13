@@ -2,8 +2,8 @@
 
 namespace loss_functions {
 
-    float crossentropy(Matrix& predict, Matrix& labels) {
-        float res = 0.0;
+    fp crossentropy(Matrix& predict, Matrix& labels) {
+        fp res = static_cast<fp>(0.0);
 
         size_t m = predict.row(), n = predict.col();
 
@@ -13,7 +13,7 @@ namespace loss_functions {
             }
         }
 
-        return res / static_cast<float>(n);
+        return res / static_cast<fp>(n);
     }
 
 }

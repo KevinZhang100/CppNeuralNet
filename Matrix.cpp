@@ -40,64 +40,25 @@ Matrix& Matrix::operator=(const Matrix& other) {
     return *this;
 }
 
-float Matrix::operator()(size_t i, size_t j) const {
-    return *(*(arr + i) + j);
-}
-
-float& Matrix::operator()(size_t i, size_t j) {
-    return *(*(arr + i) + j);
-}
-
 void Matrix::del() {
-    for (size_t i = 0; i < m; i++) {
-        delete[] arr[i];
-    }
-
-    if (arr)
-        delete[] arr;
-
+    delete[] arr;
     arr = nullptr;
     m = 0;
     n = 0;
 }
 
 void Matrix::deep_copy(const Matrix& other) {
+    resize(other.m, other.n);
+    std::memcpy(arr, other.arr, m * n * sizeof(fp));
+}
+
+void Matrix::resize(size_t rows, size_t cols) {
     del();
-    m = other.m;
-    n = other.n;
-    arr = new float*[m];
-
-    for (size_t i = 0; i < m; i++) {
-        *(arr + i) = new float[n];
-        for (size_t j = 0; j < n; j++) {
-            *(*(arr + i) + j) = *(*(other.arr + i) + j);
-        }
-    }
+    m = rows;
+    n = cols;
+    arr = new fp[m * n]();
 }
 
-void Matrix::resize(size_t m, size_t n) {
-    del();
-
-    this->m = m;
-    this->n = n;
-
-    arr = new float*[m];
-    for (size_t i = 0; i < m; i++) {
-        *(arr + i) = new float[n];
-        for (size_t j = 0; j < n; j++) {
-            *(*(arr + i) + j) = 0.0;
-        }
-    }
-}
-
-bool Matrix::empty() const {
-    return m == 0 && n == 0;
-}
-
-size_t Matrix::row() const {
-    return m;
-}
-
-size_t Matrix::col() const {
-    return n;
+fp* Matrix::raw() {
+    return arr;
 }

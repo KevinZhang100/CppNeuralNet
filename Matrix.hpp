@@ -2,12 +2,13 @@
 #define MATRIX_H
 
 #include <cstddef>
+#include <cstring>
 #include "Types.hpp"
 
 class Matrix {
 private:
     size_t m = 0, n = 0;
-    float** arr = nullptr;
+    fp* arr = nullptr;
 
 public:
     Matrix();
@@ -19,14 +20,24 @@ public:
 
     Matrix(Matrix&& other);
     Matrix& operator=(Matrix&& other);
-
-    float operator()(size_t i, size_t j) const;
-    float& operator()(size_t i, size_t j);
-
     void resize(size_t m, size_t n);
-    bool empty() const;
-    size_t row() const;
-    size_t col() const;
+    fp* raw();
+
+    inline fp operator()(size_t i, size_t j) const {
+        return arr[i * n + j];
+    }
+    inline fp& operator()(size_t i, size_t j) {
+        return arr[i * n + j];
+    }
+    inline bool empty() const {
+        return arr == nullptr || m == 0 || n == 0;
+    }
+    inline size_t row() const {
+        return m;
+    }
+    inline size_t col() const {
+        return n;
+    }
 
 private:
     void del();

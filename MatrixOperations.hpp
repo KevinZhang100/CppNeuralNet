@@ -8,8 +8,8 @@
 
 namespace operations {
 
-    Matrix multiply(Matrix& A, Matrix& B);
-    Matrix transpose(Matrix& A);
+    Matrix multiply(const Matrix& A, const Matrix& B);
+    Matrix transpose(const Matrix& A);
 
 }
 

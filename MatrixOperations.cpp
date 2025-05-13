@@ -1,36 +1,43 @@
 #include "MatrixOperations.hpp"
 
 namespace operations {
-
-    Matrix multiply(Matrix& A, Matrix& B) {
+    Matrix multiply(const Matrix& A, const Matrix& B) {
         if (A.col() != B.row()) {
             std::cout << A.col() << " " << B.row() << std::endl;
             throw std::invalid_argument("Matrix A and B sizes do not match");
         }
 
-        Matrix output(A.row(), B.col());
+        size_t a_rows = A.row();
+        size_t a_cols = A.col();
+        size_t b_cols = B.col();
 
-        for (size_t i = 0; i < A.row(); i++) {
-            for (size_t j = 0; j < B.col(); j++) {
-                for (size_t k = 0; k < B.row(); k++) {
-                    output(i, j) += A(i, k) * B(k, j);
+        Matrix output(a_rows, b_cols);
+
+        for (size_t i = 0; i < a_rows; ++i) {
+            for (size_t j = 0; j < b_cols; ++j) {
+                fp sum = static_cast<fp>(0);
+                for (size_t k = 0; k < a_cols; ++k) {
+                    sum += A(i, k) * B(k, j);
                 }
+                output(i, j) = sum;
             }
         }
 
         return output;
     }
 
-    Matrix transpose(Matrix& A) {
-        Matrix T(A.col(), A.row());
+    Matrix transpose(const Matrix& A) {
+        size_t rows = A.row();
+        size_t cols = A.col();
 
-        for (size_t i = 0; i < A.row(); i++) {
-            for (size_t j = 0; j < A.col(); j++) {
+        Matrix T(cols, rows);
+
+        for (size_t i = 0; i < rows; ++i) {
+            for (size_t j = 0; j < cols; ++j) {
                 T(j, i) = A(i, j);
             }
         }
 
         return T;
     }
-
 }

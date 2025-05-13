@@ -3,6 +3,7 @@
 
 #include <cstddef>
 
-using f16 = _Float16;
+// using fp = _Float16;
+using fp = float;
 
 #endif

@@ -79,7 +79,7 @@ Matrix Model::run() {
         if (i == epochs - 1)
             res = input;
 
-        float loss = loss_functions::crossentropy(input, labels);
+        fp loss = loss_functions::crossentropy(input, labels);
         activation_functions::dC_softmax(input, labels);
         Matrix output_gradient = std::move(input);
 

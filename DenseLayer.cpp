@@ -8,7 +8,7 @@ Dense::Dense(size_t data_size, size_t output_size, size_t hidden_size, std::stri
 
     for (size_t i = 0; i < hidden_size; ++i) {
         for (size_t j = 0; j < output_size; ++j) {
-            weights(i, j) = 0.01 * (static_cast<float>(std::rand()) / RAND_MAX);
+            weights(i, j) = static_cast<fp>(0.01) * (static_cast<fp>(std::rand()) / RAND_MAX);
         }
     }
 
@@ -34,7 +34,7 @@ Matrix Dense::forward(Matrix& input) {
     return output;
 }
 
-Matrix Dense::backward(Matrix& output_grad, float learning_rate) {
+Matrix Dense::backward(Matrix& output_grad, fp learning_rate) {
     Matrix hidden_T = operations::transpose(hidden_layer);
     Matrix weight_T = operations::transpose(weights);
 
@@ -42,7 +42,7 @@ Matrix Dense::backward(Matrix& output_grad, float learning_rate) {
     Matrix hidden_grad = operations::multiply(output_grad, weight_T);
 
     for (size_t i = 0; i < output_size; i++) {
-        float bias_grad = 0.0;
+        fp bias_grad = static_cast<fp>(0.0);
         for (size_t j = 0; j < data_size; j++) {
             bias_grad += output_grad(j, i);
         }
