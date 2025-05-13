@@ -1,34 +1,35 @@
 #include "ActivationFunctions.hpp"
 
 namespace activation_functions {
-
     void softmax(Matrix& output) {
         for (size_t i = 0; i < output.row(); i++) {
-            fp sum = static_cast<fp>(0.0), maxEle = static_cast<fp>(-1e9);
-
+            fp maxEle = -1e9;
             for (size_t j = 0; j < output.col(); j++) {
                 maxEle = std::max(maxEle, output(i, j));
             }
-
+    
+            fp sum = 0.0;
             for (size_t j = 0; j < output.col(); j++) {
-                output(i, j) = std::exp(output(i, j) - maxEle);
-                sum += output(i, j);
+                fp val = std::exp(output(i, j) - maxEle);
+                output(i, j) = val;
+                sum += val;
             }
-
+    
+            fp inv_sum = 1.0 / sum;
             for (size_t j = 0; j < output.col(); j++) {
-                output(i, j) /= sum;
+                output(i, j) *= inv_sum;
             }
         }
     }
 
     void dC_softmax(Matrix& output, Matrix& labels) {
-        fp num_examples = output.row();
+        fp inv_m = static_cast<fp>(1.0 / output.row());
+    
         for (size_t i = 0; i < output.row(); i++) {
             for (size_t j = 0; j < output.col(); j++) {
                 if (labels(i, j) == 1)
                     output(i, j) -= 1;
-
-                output(i, j) /= num_examples;
+                output(i, j) *= inv_m;
             }
         }
     }

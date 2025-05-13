@@ -73,7 +73,7 @@ Matrix Model::run() {
         Matrix input(data);
 
         for (Layer* layer : layers) {
-            input = std::move(layer->forward(input));
+            input = layer->forward(input);
         }
 
         if (i == epochs - 1)
@@ -84,7 +84,7 @@ Matrix Model::run() {
         Matrix output_gradient = std::move(input);
 
         for (int i = layers.size() - 1; i >= 0; i--) {
-            output_gradient = std::move(layers[i]->backward(output_gradient, learning_rate));
+            output_gradient = layers[i]->backward(output_gradient, learning_rate);
         }
 
         if (i % 1000 == 0) {

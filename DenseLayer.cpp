@@ -3,12 +3,13 @@
 Dense::Dense(size_t data_size, size_t output_size, size_t hidden_size, std::string activation)
     : data_size(data_size), output_size(output_size), hidden_size(hidden_size), activation(activation) {
 
-    srand(42);
+    std::mt19937 gen(69);
+    std::normal_distribution<fp> dist(0.0, 0.01);
     weights.resize(hidden_size, output_size);
 
     for (size_t i = 0; i < hidden_size; ++i) {
         for (size_t j = 0; j < output_size; ++j) {
-            weights(i, j) = static_cast<fp>(0.01) * (static_cast<fp>(std::rand()) / RAND_MAX);
+            weights(i, j) = dist(gen);
         }
     }
 
@@ -44,9 +45,9 @@ Matrix Dense::backward(Matrix& output_grad, fp learning_rate) {
     for (size_t i = 0; i < output_size; i++) {
         fp bias_grad = static_cast<fp>(0.0);
         for (size_t j = 0; j < data_size; j++) {
-            bias_grad += output_grad(j, i);
+            bias_grad += learning_rate * output_grad(j, i);
         }
-        bias[i] += learning_rate * -bias_grad;
+        bias[i] += -bias_grad;
     }
 
     for (size_t i = 0; i < hidden_size; i++) {

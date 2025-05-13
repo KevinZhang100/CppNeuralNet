@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <cstdlib>
+#include <random>
 #include "Layer.hpp"
 #include "Matrix.hpp"
 #include "Types.hpp"

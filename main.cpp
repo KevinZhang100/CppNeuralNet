@@ -39,8 +39,9 @@ int main() {
 
     // data, labels, input count, input size, epochs
     Model model(data, labels, m, n, 5000, classes);
-    model.dense(50, "relu");
-    model.dense(25, "relu");
+    model.dense(64, "relu");
+    model.dense(128, "relu");
+    model.dense(64, "relu");
     model.output();
 
     Matrix result = model.run();
